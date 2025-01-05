@@ -2,9 +2,9 @@ name: Quark Sign-in
 
 on:
   schedule:
-    - cron: '0 1 * * *'  # 每天 UTC 时间 1:00 执行，即北京时间 9:00
+    - cron: '0 16,23 * * *'  # 每天 UTC 时间 1:00 执行，即北京时间 9:00
 
-  workflow_dispatch:  # 手动触发
+  workflow_dispatch:  # 允许手动触发
 
 jobs:
   sign-in:
