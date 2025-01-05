@@ -26,3 +26,8 @@ jobs:
           COOKIE_QUARK: ${{ secrets.COOKIE_QUARK }}
         run: |
           python checkIn_Quark.py
+
+      - name: Send wxpusher notification
+        run: |
+          # 调用wxpusher通知脚本
+          python src/wxpusher.py
