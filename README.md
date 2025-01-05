@@ -4,8 +4,6 @@
 
 🎉 **本项目实现了夸克网盘的自动签到功能**，通过 GitHub Actions 自动执行，领取每日签到奖励空间，让用户无需手动操作！  
 
-> 🛑 **警告**：本项目遵循 [MIT 协议](https://opensource.org/licenses/MIT)。任何对项目的修改和发布必须保留原作者署名。  
-> 本仓库严厉谴责 [2pacJay/Quark_Auot_Check_In](https://github.com/2pacJay/Quark_Auot_Check_In) 仓库 **抹除原作者署名权的行为**，该行为严重违反 MIT 协议，侵害开源精神！  
 
 ---
 
@@ -37,7 +35,7 @@
 
 #### 🔐 添加到 GitHub Secrets  
 1. 打开 Fork 仓库，进入 **Settings -> Secrets and variables -> Actions**。  
-2. 点击 **New repository secret** 按钮，创建 `COOKIE_QUARK`。  
+2. 点击 **New repository secret** 按钮，创建 **`COOKIE_QUARK`**。  
 3. 将整理好的 Cookie 信息粘贴到值中并保存。  
 
 ---
@@ -75,11 +73,3 @@
 
 ---
 
-### 🛡️ 防盗声明  
-本项目严格遵守 MIT 协议，修改和分发时必须保留原作者署名及协议声明。  
-若发现违反行为，请通过以下方式联系：  
-📧 Email: [liucan01234@gmail.com](mailto:liucan01234@gmail.com)  
-
----  
-
-🎉 **欢迎提交 PR 和 Star 支持项目发展！**  
