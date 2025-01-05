@@ -1,25 +1,25 @@
-import os
 import requests
+import os
 
-def send_wxpusher_notification(message):
-    app_token = os.getenv('WX_APP_TOKEN')
-    uid = os.getenv('WX_UID')
-    url = 'https://wxpusher.zjiecode.com/api/send/message'
-
-    data = {
-        'appToken': app_token,
-        'content': message,
-        'uids': [uid],
-        'url': '',  # 可选，点击通知后跳转的 URL
+def send_wxpusher_message(app_token, uid, content):
+    url = "http://wxpusher.zjiecode.com/api/send/message"
+    headers = {
+        "Content-Type": "application/json"
     }
-
-    response = requests.post(url, json=data)
+    data = {
+        "appToken": app_token,
+        "content": content,
+        "contentType": 1,  # 1表示文本
+        "uids": [uid]
+    }
+    response = requests.post(url, headers=headers, json=data)
     if response.status_code == 200:
-        print('Notification sent:', response.json())
+        print("消息发送成功")
     else:
-        print('Failed to send notification:', response.text)
+        print("消息发送失败")
 
-if __name__ == '__main__':
-    message = '夸克网盘签到成功！'
-    send_wxpusher_notification(message)
-    
+if __name__ == "__main__":
+    app_token = os.getenv("WXPUSHER_APP_TOKEN")
+    uid = os.getenv("WXPUSHER_UID")
+    content = "夸克网盘签到成功！"
+    send_wxpusher_message(app_token, uid, content)
