@@ -27,8 +27,6 @@ jobs:
         run: |
           python checkIn_Quark.py
 
-      - name: Send WxPusher Notification
-        run: python src/wxpusher.py
-        env:
-          WXPUSHER_APP_TOKEN: ${{ secrets.WX_APP_TOKEN }}
-          WXPUSHER_UID: ${{ secrets.WX_UID }}
+      - name: Send WxPusher notification
+        run: |
+           python src/wxpusher.py
