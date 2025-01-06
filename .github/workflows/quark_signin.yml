@@ -36,4 +36,4 @@ jobs:
       - name: Run wxpusher
        
         run: |
-          python wxpusher.py
+          python wxpusher.py /path/to/message.txt
