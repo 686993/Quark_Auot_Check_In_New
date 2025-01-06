@@ -6,14 +6,21 @@ import subprocess
 
 cookie_list = os.getenv("COOKIE_QUARK").split('\n|&&')
 
-def check_in():
-    # 这里是你的签到逻辑
-    # 假设签到成功
-    success = True
-    message = "签到成功！" if success else "签到失败！"
+def sign_in():
+    try:
+        # 这里是你的签到逻辑
+        # 假设签到成功
+        success = True
+        message = "签到成功！"
+    except Exception as e:
+        success = False
+        message = f"签到失败: {str(e)}"
     
-    # 调用 wxpusher.py 发送通知
-    subprocess.run(['python', 'wxpusher.py', '夸克网盘签到通知', message])
+    # 调用 send_wxpusher.py 发送通知
+    title = "夸克网盘签到通知"
+    subprocess.run(['python', 'send_wxpusher.py', title, message], check=True)
+
+    return success, message
 
 # 替代 notify 功能
 def send(title, message):
@@ -196,4 +203,4 @@ if __name__ == "__main__":
     print("----------夸克网盘开始签到----------")
     main()
     print("----------夸克网盘签到完毕----------")
-    check_in()
+    sign_in()
