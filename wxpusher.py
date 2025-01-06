@@ -2,7 +2,7 @@
 import requests
 import os
 
-def send_wxpusher_notification(title, content):
+def wxpusher(title, content):
     app_token = os.getenv('WXPUSHER_APP_TOKEN')
     uid = os.getenv('WXPUSHER_UID')
     url = f"https://wxpusher.zjiecode.com/api/send/message"
@@ -26,4 +26,4 @@ if __name__ == "__main__":
     import sys
     title = sys.argv[1]
     content = sys.argv[2]
-    send_wxpusher_notification(title, content)
+    wxpusher(title, content)
