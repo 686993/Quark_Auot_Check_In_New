@@ -1,29 +1,33 @@
-# send_wxpusher.py
-import requests
 import os
+import requests
+import json
+import sys
 
-def wxpusher(title, content):
-    app_token = os.getenv('WXPUSHER_APP_TOKEN')
-    uid = os.getenv('WXPUSHER_UID')
-    url = f"https://wxpusher.zjiecode.com/api/send/message"
+def wxpusher(content):
+    token = os.getenv("WXPUSHER_TOKEN")
+    uid = os.getenv("WXPUSHER_UID")
+
+    url = "http://wxpusher.zjiecode.com/api/send/message"
     headers = {
         "Content-Type": "application/json"
     }
     data = {
-        "appToken": app_token,
+        "appToken": token,
         "content": content,
-        "summary": title,
         "contentType": 1,
-        "uids": [uid]
+        "uids": [uid],
+        "url": "",
+        "topicIds": [],
+        "verifyPay": False
     }
-    response = requests.post(url, headers=headers, json=data)
-    if response.status_code == 200:
-        print("通知发送成功")
-    else:
-        print(f"通知发送失败: {response.text}")
+
+    response = requests.post(url, headers=headers, data=json.dumps(data))
+    return response.json()
 
 if __name__ == "__main__":
-    import sys
-    title = sys.argv[1]
-    content = sys.argv[2]
-    wxpusher(title, content)
+    if len(sys.argv) != 2:
+        print("Usage: python wxpusher.py <message>")
+        sys.exit(1)
+
+    message = sys.argv[1]
+    send_wxpusher_message(message)
