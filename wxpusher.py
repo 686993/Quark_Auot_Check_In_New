@@ -3,7 +3,7 @@ import requests
 import json
 import sys
 
-def send_wxpusher_message(content):
+def wxpusher(content):
     token = os.getenv("WXPUSHER_APP_TOKEN")
     uid = os.getenv("WXPUSHER_UID")
 
@@ -30,4 +30,4 @@ if __name__ == "__main__":
         sys.exit(1)
 
     message = sys.argv[1]
-    wxpusher(message)
+       wxpusher(message)
