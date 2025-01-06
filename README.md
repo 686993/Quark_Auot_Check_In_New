@@ -35,7 +35,7 @@
    ```
    user=; kps=; sign=; vcode=;
    ```
-#### 增加 `wxpusher` 推送通知 
+#### 🔐 增加 `wxpusher` 推送通知 
 1. 进入 **Settings -> Secrets and variables -> Actions**。
 2. 点击 **New repository secret** 按钮，创建 **`WXPUSHER_APP_TOKEN` ，`WXPUSHER_UID`**。
 3. 将从 `wxpusher` 获取的参数粘贴到值中并保存。
