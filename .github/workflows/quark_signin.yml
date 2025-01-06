@@ -25,7 +25,7 @@ jobs:
 
       - name: Install dependencies
         run: pip install requests
-             pip install wxpusher
+             
              
       - name: Run Quark Sign-in
         env:
