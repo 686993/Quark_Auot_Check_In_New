@@ -18,7 +18,7 @@ def sign_in():
     
     # 调用 send_wxpusher.py 发送通知
     title = "夸克网盘签到通知"
-    subprocess.run(['python', 'send_wxpusher.py', title, message], check=True)
+    subprocess.run(['python', 'wxpusher.py', title, message], check=True)
 
     return success, message
 
