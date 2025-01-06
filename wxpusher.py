@@ -2,7 +2,7 @@ import os
 import sys
 import requests
 
-def send_wxpusher_message(app_token, uid, message):
+def wxpusher(app_token, uid, message):
     """
     发送消息到 WxPusher
     :param app_token: WxPusher AppToken
@@ -44,7 +44,7 @@ def main():
     message = sys.argv[1]
 
     # 发送消息
-    send_wxpusher_message(app_token, uid, message)
+    wxpusher(app_token, uid, message)
 
 if __name__ == "__main__":
     main()
