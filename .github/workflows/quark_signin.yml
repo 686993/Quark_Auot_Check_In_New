@@ -9,9 +9,11 @@ on:
 jobs:
   sign-in:
     runs-on: ubuntu-latest
+    
     env:
       WXPUSHER_APP_TOKEN: ${{ secrets.WXPUSHER_APP_TOKEN }}
       WXPUSHER_UID: ${{ secrets.WXPUSHER_UID }}
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -23,7 +25,8 @@ jobs:
 
       - name: Install dependencies
         run: pip install requests
-
+             pip install wxpusher
+             
       - name: Run Quark Sign-in
         env:
           COOKIE_QUARK: ${{ secrets.COOKIE_QUARK }}
