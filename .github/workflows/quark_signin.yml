@@ -2,14 +2,14 @@ name: Quark Sign-in
 
 on:
   schedule:
-    - cron: '0 16,23 * * *'  # 每天 UTC 时间 1:00 执行，即北京时间 9:00
+    - cron: '0 23 * * *'  # 每天 UTC 时间 1:00 执行，即北京时间 9:00
 
   workflow_dispatch:  # 允许手动触发
 
 jobs:
   sign-in:
     runs-on: ubuntu-latest
-    
+
     env:
       WXPUSHER_APP_TOKEN: ${{ secrets.WXPUSHER_APP_TOKEN }}
       WXPUSHER_UID: ${{ secrets.WXPUSHER_UID }}
@@ -25,12 +25,9 @@ jobs:
 
       - name: Install dependencies
         run: pip install requests
-             
-             
+
       - name: Run Quark Sign-in
         env:
           COOKIE_QUARK: ${{ secrets.COOKIE_QUARK }}
         run: |
           python checkIn_Quark.py
-
-   
