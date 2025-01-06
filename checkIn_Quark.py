@@ -180,7 +180,9 @@ def main():
     try:
         send('夸克自动签到', msg)
          # 调用 wxpusher.py 发送通知，并传递签到结果作为参数
-        subprocess.run(["python", "wxpusher.py", msg])
+        subprocess.run(["python", "wxpusher.py", msg], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error running wxpusher.py: {e}")
     except Exception as err:
         print('%s\n❌ 错误，请查看运行日志！' % err)
 
