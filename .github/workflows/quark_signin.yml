@@ -33,4 +33,7 @@ jobs:
         run: |
           python checkIn_Quark.py
 
-      
+      - name: Run wxpusher
+       
+        run: |
+          python wxpusher.py
