@@ -3,8 +3,8 @@ import requests
 import json
 import sys
 
-def send_wxpusher_message(content):
-    token = os.getenv("WXPUSHER_TOKEN")
+def wxpusher(content):
+    token = os.getenv("WXPUSHER_APP_TOKEN")
     uid = os.getenv("WXPUSHER_UID")
 
     url = "http://wxpusher.zjiecode.com/api/send/message"
@@ -32,4 +32,4 @@ if __name__ == "__main__":
     message_path = sys.argv[1]
     with open(message_path, 'r', encoding='utf-8') as file:
         message = file.read()
-    send_wxpusher_message(message)
+    wxpusher(message)
