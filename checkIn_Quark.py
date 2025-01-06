@@ -7,20 +7,25 @@ import subprocess
 cookie_list = os.getenv("COOKIE_QUARK").split('\n|&&')
 
 def sign_in():
-    try:
-        # 这里是你的签到逻辑
-        # 假设签到成功
-        success = True
-        message = "签到成功！"
-    except Exception as e:
-        success = False
-        message = f"签到失败: {str(e)}"
+    # 这里是你的签到逻辑
+    # 假设签到成功并获取到以下信息
+    account_info = "一号"
+    total_capacity = "31.92 GB"
+    sign_capacity = "10.92 GB"
+    sign_log = "今日已签到+40.00 MB，连签进度(2/7)"
     
-    # 调用 send_wxpusher.py 发送通知
-    title = "夸克网盘签到通知"
-    subprocess.run(['python', 'wxpusher.py', title, message], check=True)
+    # 构建通知内容
+    title = f"夸克自动签到：第1个账号  普通用户  {account_info}"
+    content = (
+        f"网盘总容量：{total_capacity}\n"
+        f"签到累计容量：{sign_capacity}\n"
+        f"签到日志：{sign_log}\n"        
+        f"---夸克网盘签到完毕---"
+    )
+    
+    subprocess.run(['python', 'wxpusher.py', title, content], check=True)
 
-    return success, message
+    return success, content
 
 # 替代 notify 功能
 def send(title, message):
