@@ -4,7 +4,7 @@ import json
 import sys
 
 def send_wxpusher_message(content):
-    token = os.getenv("WXPUSHER_TOKEN")
+    token = os.getenv("WXPUSHER_APP_TOKEN")
     uid = os.getenv("WXPUSHER_UID")
 
     url = "http://wxpusher.zjiecode.com/api/send/message"
@@ -30,4 +30,4 @@ if __name__ == "__main__":
         sys.exit(1)
 
     message = sys.argv[1]
-    send_wxpusher_message(message)
+    wxpusher(message)
