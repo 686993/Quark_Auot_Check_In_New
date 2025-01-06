@@ -7,18 +7,6 @@ import subprocess
 cookie_list = os.getenv("COOKIE_QUARK").split('\n|&&')
 
 
-def auto_sign_in():
-    # 这里是您的自动签到逻辑
-    # 假设签到成功后返回一个消息
-    sign_in_result = "今日签到成功，获得100MB空间奖励！"
-    return sign_in_result
-
-def main():
-    sign_in_result = auto_sign_in()
-    if "成功" in sign_in_result:
-        # 调用 wxpusher.py 发送通知，并传递签到结果作为参数
-        subprocess.run(["python", "wxpusher.py", sign_in_result])
-
 
 # 替代 notify 功能
 def send(title, message):
@@ -191,6 +179,8 @@ def main():
 
     try:
         send('夸克自动签到', msg)
+         # 调用 wxpusher.py 发送通知，并传递签到结果作为参数
+        subprocess.run(["python", "wxpusher.py", msg])
     except Exception as err:
         print('%s\n❌ 错误，请查看运行日志！' % err)
 
@@ -201,4 +191,4 @@ if __name__ == "__main__":
     print("----------夸克网盘开始签到----------")
     main()
     print("----------夸克网盘签到完毕----------")
-    main()
+
