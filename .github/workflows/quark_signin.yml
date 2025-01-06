@@ -27,6 +27,4 @@ jobs:
         run: |
           python checkIn_Quark.py
 
-      - name: Send WxPusher notification
-        run: |
-           python wxpusher.py
+      
