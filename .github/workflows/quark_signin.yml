@@ -29,4 +29,4 @@ jobs:
 
       - name: Send WxPusher notification
         run: |
-           python src/wxpusher.py
+           python wxpusher.py
