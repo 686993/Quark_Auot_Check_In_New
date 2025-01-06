@@ -4,7 +4,6 @@
 
 🎉 **本项目实现了夸克网盘的自动签到功能**，通过 GitHub Actions 自动执行，领取每日签到奖励空间，让用户无需手动操作！  
 
-
 ---
 
 ## 🚀 功能简介  
@@ -26,20 +25,24 @@
 使用手机抓包工具（推荐 [proxypin](https://proxypin.example)）获取 Cookie 信息：  
 1. 打开手机抓包工具，访问夸克网盘签到页。  
 2. 找到接口 `https://drive-m.quark.cn/1/clouddrive/capacity/growth/info` 的请求信息。  
-3. 复制请求中的参数：```kps```、```sign``` 和 ```vcode```。  
+3. 复制请求中的参数：`kps` 、`sign` 和 `vcode`。  
 4. 将参数整理为以下格式：  
    ```
    user=张三; kps=abcdefg; sign=hijklmn; vcode=111111111;
    ```
-   > 其中 `user` 字段为用户名，可随意填写。多个账户可用 **回车或 && 分隔**。
+   > 其中 `user` 字段为用户名，可随意填写。多个账户可用 **回车 或 && 分隔**。
 5. 以下是变量模板：     
    ```
    user=; kps=; sign=; vcode=;
    ```
-   
+#### 增加 `wxpusher` 推送通知 
+1. 进入 **Settings -> Secrets and variables -> Actions**。
+2. 点击 **New repository secret** 按钮，创建 **`WXPUSHER_APP_TOKEN` ，`WXPUSHER_UID`**。
+3. 将从 `wxpusher` 获取的参数粘贴到值中并保存。
+         
 #### 🔐 添加到 GitHub Secrets  
 1. 打开 Fork 仓库，进入 **Settings -> Secrets and variables -> Actions**。  
-2. 点击 **New repository secret** 按钮，创建 **```COOKIE_QUARK```**。  
+2. 点击 **New repository secret** 按钮，创建 **`COOKIE_QUARK`**。  
 3. 将整理好的 Cookie 信息粘贴到值中并保存。  
 
 ---
@@ -76,4 +79,3 @@
 本项目为开源项目，作者不对任何因使用本项目产生的后果负责。  
 
 ---
-
