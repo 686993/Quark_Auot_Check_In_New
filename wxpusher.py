@@ -22,9 +22,9 @@ def wxpusher(app_token, uid, message):
 
     # 检查响应
     if response.status_code == 200:
-        print("Message sent successfully!")
+        print("WXPusher sent successfully!")
     else:
-        print("Failed to send message:", response.text)
+        print("Failed to send WXPusher:", response.text)
 
 def main():
     # 从环境变量中获取 WxPusher 配置
