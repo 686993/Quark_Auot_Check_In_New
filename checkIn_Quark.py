@@ -176,6 +176,7 @@ def main():
         subprocess.run(['python', 'wxpusher.py', msg], check=True)
     except subprocess.CalledProcessError as e:
         print(f"❌ 调用 wxpusher.py 失败: {e}")
+        send('夸克自动签到', msg)
     except Exception as err:
         print('%s\n❌ 错误，请查看运行日志！' % err)
 
