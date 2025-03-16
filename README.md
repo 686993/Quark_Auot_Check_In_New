@@ -25,7 +25,7 @@
 使用手机抓包工具（推荐 [proxypin](https://github.com/wanghongenpin/proxypin)）获取 Cookie 信息：  
 1. 打开手机抓包工具，访问夸克网盘签到页。  
 2. 找到接口 `https://drive-m.quark.cn/1/clouddrive/capacity/growth/info` 的请求信息。  
-3. 复制请求中的参数：`kps` 、`sign` 和 `vcode`。  
+3. 复制请求中的参数：`kps` 、`sign` 和 `vcode`。  【初步测试发现这个 Key 的值有效期在两个月左右】
 4. 将参数整理为以下格式：  
    ```
    user=张三; kps=abcdefg; sign=hijklmn; vcode=111111111;
