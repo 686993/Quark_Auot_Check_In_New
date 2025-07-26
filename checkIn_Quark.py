@@ -7,25 +7,11 @@ import wxpusher # 导入 wxpusher 模块
 cookie_list = os.getenv("COOKIE_QUARK").split('\n|&&')
 
 # 替代 notify 功能，现在调用 wxpusher 模块
-def send(title, message):
-    try:
-        # 获取 WXPUSHER_APP_TOKEN 和 WXPUSHER_UID 环境变量
-        WXPUSHER_APP_TOKEN = os.getenv("WXPUSHER_APP_TOKEN")
-        WXPUSHER_UID = os.getenv("WXPUSHER_UID")
-
-        if not WXPUSHER_APP_TOKEN or not WXPUSHER_UID:
-            print("❌ WXPUSHER_APP_TOKEN 或 WXPUSHER_UID 环境变量未设置，无法发送WxPusher消息。")
-            print(f"{title}: {message}") # 如果环境变量未设置，仍然打印到控制台
-            return
-
-        # 调用 wxpusher.py 中的 wxpusher 函数
-        # 注意：这里假设 title 会作为消息的一部分，因为它不是 wxpusher 函数的直接参数
-        full_message = f"{title}\n{message}"
-        wxpusher.wxpusher(WXPUSHER_APP_TOKEN, WXPUSHER_UID, full_message)
-        print(f"✅ 消息已通过WxPusher发送: {title}")
-    except Exception as e:
-        print(f"❌ 调用 wxpusher 发送失败: {e}")
-        print(f"{title}: {message}") # 如果 wxpusher 发送失败，仍然打印到控制台
+# 这个函数将不再直接发送，而是返回要发送的完整消息
+def format_notification_message(title, message):
+    # WxPusher的 content 字段就是消息主体，title可以作为消息的一部分
+    # 确保所有详细信息都在 message 参数中
+    return f"{title}\n{message}"
 
 # 获取环境变量
 def get_env():
@@ -36,8 +22,8 @@ def get_env():
     else:
         # 标准日志输出
         print('❌未添加COOKIE_QUARK变量')
-        send('夸克自动签到', '❌未添加COOKIE_QUARK变量')
-        # 脚本退出
+        # 在这里不调用 send，因为 send 现在是用来构建消息的
+        # main函数会在最后统一发送通知
         sys.exit(0)
 
     return cookie_list
@@ -191,12 +177,29 @@ def main():
 
         i += 1
 
-    # print(msg)
+    # print(msg) # 可以用于调试，但通常不需要在生产环境中打印
 
+    print("----------夸克网盘签到完毕----------")
+
+    # WxPusher调用信息放在----------夸克网盘签到完毕----------的后面
     try:
-        send('夸克自动签到', msg)
+        # 获取 WXPUSHER_APP_TOKEN 和 WXPUSHER_UID 环境变量
+        WXPUSHER_APP_TOKEN = os.getenv("WXPUSHER_APP_TOKEN")
+        WXPUSHER_UID = os.getenv("WXPUSHER_UID")
+
+        if not WXPUSHER_APP_TOKEN or not WXPUSHER_UID:
+            print("❌ WXPUSHER_APP_TOKEN 或 WXPUSHER_UID 环境变量未设置，无法发送WxPusher消息。")
+            # 不再退出，只是不发送通知
+        else:
+            # 调用 wxpusher.py 中的 wxpusher 函数
+            # 使用 format_notification_message 来组织最终的发送内容
+            final_notification_content = format_notification_message('夸克自动签到', msg)
+            wxpusher.wxpusher(WXPUSHER_APP_TOKEN, WXPUSHER_UID, final_notification_content)
+            print("✅ 消息已通过WxPusher发送。")
     except Exception as err:
-        print('%s\n❌ 错误，请查看运行日志！' % err)
+        print(f'❌ 调用 WxPusher 失败: {err}')
+        # 依然打印签到信息到日志，以防通知失败
+        print(f"签到结果:\n{msg}")
 
     return msg[:-1]
 
@@ -204,4 +207,3 @@ def main():
 if __name__ == "__main__":
     print("----------夸克网盘开始签到----------")
     main()
-    print("----------夸克网盘签到完毕----------")
