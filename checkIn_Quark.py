@@ -177,7 +177,7 @@ def main():
 
         i += 1
 
-    # This line was commented out before. Uncommenting it will print the detailed logs.
+    # This line prints the detailed logs to the GitHub Actions console output
     print(msg)
 
     print("----------夸克网盘签到完毕----------")
@@ -196,7 +196,8 @@ def main():
             # 使用 format_notification_message 来组织最终的发送内容
             final_notification_content = format_notification_message('夸克自动签到', msg)
             wxpusher.wxpusher(WXPUSHER_APP_TOKEN, WXPUSHER_UID, final_notification_content)
-            print("✅ 消息已通过WxPusher发送。")
+            # 删除了这一行，现在只有 wxpusher.py 自己的成功提示
+            # print("✅ 消息已通过WxPusher发送。") 
     except Exception as err:
         print(f'❌ 调用 WxPusher 失败: {err}')
         # 依然打印签到信息到日志，以防通知失败
