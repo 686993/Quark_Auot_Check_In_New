@@ -190,7 +190,6 @@ def main():
     # Print a single blank line before the final footer
     print()
     print("----------夸克网盘签到完毕----------")
-    print()
 
     # WxPusher调用信息放在----------夸克网盘签到完毕----------的后面
     try:
