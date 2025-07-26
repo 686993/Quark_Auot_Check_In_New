@@ -8,45 +8,45 @@ cookie_list = os.getenv("COOKIE_QUARK").split('\n|&&')
 
 # 替代 notify 功能，现在调用 wxpusher 模块
 # 这个函数将不再直接发送，而是返回要发送的完整消息
-定义 格式化通知消息(标题, 消息):
+def format_notification_message(title, message):
     # WxPusher的 content 字段就是消息主体，title可以作为消息的一部分
     # 确保所有详细信息都在 message 参数中
-    返回 f"{标题}\n{消息}"
+    return f"{title}\n{message}"
 
 # 获取环境变量
-定义 获取环境():
+def get_env():
     # 判断 COOKIE_QUARK是否存在于环境变量
-    如果 "COOKIE_QUARK" 在 os.环境:
+    if "COOKIE_QUARK" in os.environ:
         # 读取系统变量以 \n 或 && 分割变量
-        cookie_list = re.split('\n||', os.environ.get('COOKIE_QUARK'))
-    否则:
+        cookie_list = re.split('\n|&&', os.environ.get('COOKIE_QUARK'))
+    else:
         # 标准日志输出
-        打印('❌未添加COOKIE_QUARK变量')
+        print('❌未添加COOKIE_QUARK变量')
         # 在这里不调用 send，因为 send 现在是用来构建消息的
         # main函数会在最后统一发送通知
-        系统.退出(0)
+        sys.exit(0)
 
-    返回 cookie列表
+    return cookie_list
 
 # 其他代码...
 
-类夸克：
-    ' ' '
+class Quark:
+    '''
     Quark类封装了签到、领取签到奖励的方法
-    ' ' '
-    定义 __init__(self, user_data):
-        ' ' '
+    '''
+    def __init__(self, user_data):
+        '''
         初始化方法
-        :参数 user_data: 用户信息，用于后续的请求
-        ''''
-        self.param = 用户数据
+        :param user_data: 用户信息，用于后续的请求
+        '''
+        self.param = user_data
 
-    定义 转换字节(自身, b):
-        ' ' '
+    def convert_bytes(self, b):
+        '''
         将字节转换为 MB GB TB
-        :参数 b: 字节数
-        :返回: 返回 MB GB TB
-        ''''
+        :param b: 字节数
+        :return: 返回 MB GB TB
+        '''
         units = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
         i = 0
         while b >= 1024 and i < len(units) - 1:
@@ -64,8 +64,8 @@ cookie_list = os.getenv("COOKIE_QUARK").split('\n|&&')
             "pr": "ucpro",
             "fr": "android",
             "kps": self.param.get('kps'),
-            "签名": self.参数.获取('签名'),
-            "验证码"：self.参数.获取('验证码')
+            "sign": self.param.get('sign'),
+            "vcode": self.param.get('vcode')
         }
         response = requests.get(url=url, params=querystring).json()
         #print(response)
