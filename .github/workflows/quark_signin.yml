@@ -21,26 +21,7 @@ jobs:
         with:
           path: .last_success_date
           key: last-success-marker
-
-      - name: 判断是否已签到
-        id: check
-        run: |
-          current_date=$(TZ='Asia/Shanghai' date '+%Y-%m-%d')
-          echo "当前北京时间: $current_date"
-
-          if [ -f .last_success_date ]; then
-            last_date=$(cat .last_success_date)
-            echo "上次签到日期: $last_date"
-            if [ "$last_date" = "$current_date" ]; then
-              echo "今天已成功签到，跳过执行。"
-              echo "skip=false" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-          fi
-
-          echo "今天尚未签到，继续执行。"
-          echo "skip=true" >> "$GITHUB_OUTPUT"
-
+     
   sign-in:
     needs: check-if-already-signed
     if: needs.check-if-already-signed.outputs.skip == 'true'
