@@ -2,8 +2,8 @@ name: Quark签到
 
 on:
   schedule:
-    - cron: '0 1 * * *'   # 北京时间 09:00 (UTC+8 -> UTC+1)
-    - cron: '0 5 * * *'   # 北京时间 13:00 (UTC+8 -> UTC+5)
+    - cron: '1 0 * * *'   # 北京时间 08:00 (UTC+8 -> UTC+1)
+    - cron: '1 11 * * *'   # 北京时间 19:00 (UTC+8 -> UTC+5)
   workflow_dispatch:      # 允许手动触发
 
 jobs:
@@ -107,4 +107,4 @@ jobs:
           token: ${{ github.token }}
           repository: ${{ github.repository }}
           retain_days: 0
-          keep_minimum_runs: 60
+          keep_minimum_runs: 50
