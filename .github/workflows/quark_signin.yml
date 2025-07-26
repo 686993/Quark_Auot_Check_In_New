@@ -1,51 +1,110 @@
-name: Quark Sign-in
+name: Quark签到
 
 on:
   schedule:
-    - cron: '0 23,11 * * *'  # 每天 UTC 时间 1:00 执行，即北京时间 9:00
-
-  workflow_dispatch:  # 允许手动触发
+    - cron: '0 1 * * *'   # 北京时间 09:00 (UTC+8 -> UTC+1)
+    - cron: '0 5 * * *'   # 北京时间 13:00 (UTC+8 -> UTC+5)
+  workflow_dispatch:      # 允许手动触发
 
 jobs:
-  sign-in:
+  check-if-already-signed:
     runs-on: ubuntu-latest
-
-    env:
-      WXPUSHER_APP_TOKEN: ${{ secrets.WXPUSHER_APP_TOKEN }}
-      WXPUSHER_UID: ${{ secrets.WXPUSHER_UID }}
-      
+    outputs:
+      skip: ${{ steps.check.outputs.skip }}
     steps:
-      - name: Checkout code
+      - name: 检出代码
         uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: 恢复签到成功记录缓存
+        id: cache-success-restore
+        uses: actions/cache@v4
+        with:
+          path: .last_success_date
+          key: last-success-marker
+
+      - name: 判断是否已签到
+        id: check
+        run: |
+          current_date=$(TZ='Asia/Shanghai' date '+%Y-%m-%d')
+          echo "当前北京时间: $current_date"
+
+          if [ -f .last_success_date ]; then
+            last_date=$(cat .last_success_date)
+            echo "上次签到日期: $last_date"
+            if [ "$last_date" = "$current_date" ]; then
+              echo "今天已成功签到，跳过执行。"
+              echo "skip=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+
+          echo "今天尚未签到，继续执行。"
+          echo "skip=true" >> "$GITHUB_OUTPUT"
+
+  sign-in:
+    needs: check-if-already-signed
+    if: needs.check-if-already-signed.outputs.skip == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v3
+
+      - name: 随机延迟（早上）
+        if: github.event.schedule == '0 1 * * *'
+        run: |
+          delay=$((RANDOM % 60))
+          echo "早上签到，延迟 $delay 秒后开始.."
+          sleep $delay
+
+      - name: 随机延迟（下午/手动触发）
+        if: github.event.schedule == '0 5 * * *' || github.event_name == 'workflow_dispatch'
+        run: |
+          delay=$((RANDOM % 30))
+          echo "下午兜底或手动触发，延迟 $delay 秒后开始.."
+          sleep $delay
+
+      - name: 设置Python环境
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      - name: Install dependencies
+      - name: 安装依赖
         run: pip install requests
 
-      - name: Run Quark Sign-in
+      - name: 执行签到脚本
         env:
           COOKIE_QUARK: ${{ secrets.COOKIE_QUARK }}
+        run: python checkIn_Quark.py
+
+      - name: 标记今天签到成功
+        if: success()
         run: |
-          python checkIn_Quark.py
+          date_str=$(TZ='Asia/Shanghai' date '+%Y-%m-%d')
+          echo "$date_str" > .last_success_date
+          echo "已记录成功签到日期: $date_str"
 
-      - name: 🎉 Delete old workflow run
-        uses: yxdz2020/delete-workflow-runs@v20250101
+      - name: 保存成功记录到缓存
+        if: success()
+        uses: actions/cache@v4
         with:
-          token: ${{ github.token }}
-          repository: ${{ github.repository }}
-          retain_days: 0
-          keep_minimum_runs: 50
+          path: .last_success_date
+          key: last-success-marker
 
-      - name: 🚗 Keep Running
-        if: github.event_name == 'schedule'
+      - name: 空提交保持活跃
+        if: success() && github.event_name == 'schedule'
         run: |
           git config --local user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
           git config --local user.name "${{ github.actor }}"
           git remote set-url origin https://${{ github.actor }}:${{ github.token }}@github.com/${{ github.repository }}
           git pull --rebase --autostash
-          git commit --allow-empty -m "Keep Running..."
+          git commit --allow-empty -m "CHORE: 保持运行.."
           git push
+
+      - name: 清理旧的工作流记录
+        uses: Mattraks/delete-workflow-runs@main
+        if: always()
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: 0
+          keep_minimum_runs: 60
