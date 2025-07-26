@@ -1,28 +1,35 @@
-import os 
-import re 
-import sys 
-import requests 
+import os
+import re
+import sys
+import requests
+import wxpusher # 导入 wxpusher 模块
 
 cookie_list = os.getenv("COOKIE_QUARK").split('\n|&&')
 
-# 替代 notify 功能
+# 替代 notify 功能，现在调用 wxpusher 模块
 def send(title, message):
-    print(f"{title}: {message}")
+    try:
+        # 假设 wxpusher.py 中有一个 send_message 函数，接收 title 和 message
+        # 你可能需要根据 wxpusher.py 的实际实现调整这里的函数名和参数
+        wxpusher.send_message(title, message)
+    except Exception as e:
+        print(f"调用 wxpusher 发送失败: {e}")
+        print(f"{title}: {message}") # 如果 wxpusher 发送失败，仍然打印到控制台
 
-# 获取环境变量 
-def get_env(): 
-    # 判断 COOKIE_QUARK是否存在于环境变量 
-    if "COOKIE_QUARK" in os.environ: 
-        # 读取系统变量以 \n 或 && 分割变量 
-        cookie_list = re.split('\n|&&', os.environ.get('COOKIE_QUARK')) 
-    else: 
-        # 标准日志输出 
-        print('❌未添加COOKIE_QUARK变量') 
-        send('夸克自动签到', '❌未添加COOKIE_QUARK变量') 
-        # 脚本退出 
-        sys.exit(0) 
+# 获取环境变量
+def get_env():
+    # 判断 COOKIE_QUARK是否存在于环境变量
+    if "COOKIE_QUARK" in os.environ:
+        # 读取系统变量以 \n 或 && 分割变量
+        cookie_list = re.split('\n|&&', os.environ.get('COOKIE_QUARK'))
+    else:
+        # 标准日志输出
+        print('❌未添加COOKIE_QUARK变量')
+        send('夸克自动签到', '❌未添加COOKIE_QUARK变量')
+        # 脚本退出
+        sys.exit(0)
 
-    return cookie_list 
+    return cookie_list
 
 # 其他代码...
 
