@@ -37,7 +37,10 @@ jobs:
 
       - name: 执行签到脚本
         env:
+          # 确保这些变量已在你的GitHub仓库Secrets中设置
           COOKIE_QUARK: ${{ secrets.COOKIE_QUARK }}
+          WXPUSHER_APP_TOKEN: ${{ secrets.WXPUSHER_APP_TOKEN }} # <-- 新增行
+          WXPUSHER_UID: ${{ secrets.WXPUSHER_UID }}             # <-- 新增行
         run: python checkIn_Quark.py
 
       - name: 空提交保持活跃
