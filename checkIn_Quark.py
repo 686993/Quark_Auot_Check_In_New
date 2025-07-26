@@ -9,11 +9,22 @@ cookie_list = os.getenv("COOKIE_QUARK").split('\n|&&')
 # 替代 notify 功能，现在调用 wxpusher 模块
 def send(title, message):
     try:
-        # 假设 wxpusher.py 中有一个 send_message 函数，接收 title 和 message
-        # 你可能需要根据 wxpusher.py 的实际实现调整这里的函数名和参数
-        wxpusher.send_message(title, message)
+        # 获取 WXPUSHER_APP_TOKEN 和 WXPUSHER_UID 环境变量
+        WXPUSHER_APP_TOKEN = os.getenv("WXPUSHER_APP_TOKEN")
+        WXPUSHER_UID = os.getenv("WXPUSHER_UID")
+
+        if not WXPUSHER_APP_TOKEN or not WXPUSHER_UID:
+            print("❌ WXPUSHER_APP_TOKEN 或 WXPUSHER_UID 环境变量未设置，无法发送WxPusher消息。")
+            print(f"{title}: {message}") # 如果环境变量未设置，仍然打印到控制台
+            return
+
+        # 调用 wxpusher.py 中的 wxpusher 函数
+        # 注意：这里假设 title 会作为消息的一部分，因为它不是 wxpusher 函数的直接参数
+        full_message = f"{title}\n{message}"
+        wxpusher.wxpusher(WXPUSHER_APP_TOKEN, WXPUSHER_UID, full_message)
+        print(f"✅ 消息已通过WxPusher发送: {title}")
     except Exception as e:
-        print(f"调用 wxpusher 发送失败: {e}")
+        print(f"❌ 调用 wxpusher 发送失败: {e}")
         print(f"{title}: {message}") # 如果 wxpusher 发送失败，仍然打印到控制台
 
 # 获取环境变量
