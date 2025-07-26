@@ -158,7 +158,8 @@ def main():
     global cookie_quark
     cookie_quark = get_env()
 
-    print("✅ 检测到共", len(cookie_quark), "个夸克账号\n")
+    # Removed the '\n' from here, print() will add one.
+    print("✅ 检测到共", len(cookie_quark), "个夸克账号")
 
     i = 0
     while i < len(cookie_quark):
@@ -173,13 +174,21 @@ def main():
         msg += log
         # 登录
         log = Quark(user_data).do_sign()
-        msg += log + "\n"
+        msg += log # Removed the '\n' here because msg from do_sign already ends with '\n'
+        # To ensure a blank line between accounts if there are multiple, you could add:
+        if i < len(cookie_quark) - 1:
+            msg += "\n" # Add a newline *only* if it's not the last account
 
         i += 1
 
-    # This line prints the detailed logs to the GitHub Actions console output
-    print(msg)
+    # Print a single blank line before the detailed message
+    print()
+    # This prints the detailed logs to the GitHub Actions console output
+    # .strip() removes leading/trailing whitespace, including extra newlines
+    print(msg.strip())
 
+    # Print a single blank line before the final footer
+    print()
     print("----------夸克网盘签到完毕----------")
 
     # WxPusher调用信息放在----------夸克网盘签到完毕----------的后面
@@ -194,14 +203,12 @@ def main():
         else:
             # 调用 wxpusher.py 中的 wxpusher 函数
             # 使用 format_notification_message 来组织最终的发送内容
-            final_notification_content = format_notification_message('夸克自动签到', msg)
+            final_notification_content = format_notification_message('夸克自动签到', msg.strip()) # Use strip here too for clean notification
             wxpusher.wxpusher(WXPUSHER_APP_TOKEN, WXPUSHER_UID, final_notification_content)
-            # 删除了这一行，现在只有 wxpusher.py 自己的成功提示
-            # print("✅ 消息已通过WxPusher发送。") 
     except Exception as err:
         print(f'❌ 调用 WxPusher 失败: {err}')
         # 依然打印签到信息到日志，以防通知失败
-        print(f"签到结果:\n{msg}") # This line ensures logs are always in console even if WxPusher fails
+        print(f"签到结果:\n{msg.strip()}") # Ensure this also prints cleanly
 
     return msg[:-1]
 
