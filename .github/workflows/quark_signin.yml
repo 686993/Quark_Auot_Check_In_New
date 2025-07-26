@@ -2,29 +2,12 @@ name: Quark签到
 
 on:
   schedule:
-    - cron: '1 0 * * *'   # 北京时间 08:00 (UTC+8 -> UTC+1)
+    - cron: '1 0 * * *'    # 北京时间 08:00 (UTC+8 -> UTC+1)
     - cron: '1 11 * * *'   # 北京时间 19:00 (UTC+8 -> UTC+5)
-  workflow_dispatch:      # 允许手动触发
+  workflow_dispatch:       # 允许手动触发
 
 jobs:
-  check-if-already-signed:
-    runs-on: ubuntu-latest
-    outputs:
-      skip: ${{ steps.check.outputs.skip }}
-    steps:
-      - name: 检出代码
-        uses: actions/checkout@v3
-
-      - name: 恢复签到成功记录缓存
-        id: cache-success-restore
-        uses: actions/cache@v4
-        with:
-          path: .last_success_date
-          key: last-success-marker
-     
   sign-in:
-    needs: check-if-already-signed
-    if: needs.check-if-already-signed.outputs.skip == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: 检出代码
@@ -56,20 +39,6 @@ jobs:
         env:
           COOKIE_QUARK: ${{ secrets.COOKIE_QUARK }}
         run: python checkIn_Quark.py
-
-      - name: 标记今天签到成功
-        if: success()
-        run: |
-          date_str=$(TZ='Asia/Shanghai' date '+%Y-%m-%d')
-          echo "$date_str" > .last_success_date
-          echo "已记录成功签到日期: $date_str"
-
-      - name: 保存成功记录到缓存
-        if: success()
-        uses: actions/cache@v4
-        with:
-          path: .last_success_date
-          key: last-success-marker
 
       - name: 空提交保持活跃
         if: success() && github.event_name == 'schedule'
