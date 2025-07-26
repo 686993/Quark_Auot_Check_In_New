@@ -213,7 +213,6 @@ def main():
 
     return msg[:-1]
 
-
 if __name__ == "__main__":
     print("----------夸克网盘开始签到----------")
     main()
