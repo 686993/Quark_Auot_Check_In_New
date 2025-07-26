@@ -182,13 +182,13 @@ def main():
         i += 1
 
     # Print a single blank line before the detailed message
-    print()
+    print("\n")
     # This prints the detailed logs to the GitHub Actions console output
     # .strip() removes leading/trailing whitespace, including extra newlines
     print(msg.strip())
 
     # Print a single blank line before the final footer
-    print()
+    print("\n")
     print("----------夸克网盘签到完毕----------")
 
     # WxPusher调用信息放在----------夸克网盘签到完毕----------的后面
