@@ -177,7 +177,8 @@ def main():
 
         i += 1
 
-    # print(msg) # 可以用于调试，但通常不需要在生产环境中打印
+    # This line was commented out before. Uncommenting it will print the detailed logs.
+    print(msg)
 
     print("----------夸克网盘签到完毕----------")
 
@@ -199,7 +200,7 @@ def main():
     except Exception as err:
         print(f'❌ 调用 WxPusher 失败: {err}')
         # 依然打印签到信息到日志，以防通知失败
-        print(f"签到结果:\n{msg}")
+        print(f"签到结果:\n{msg}") # This line ensures logs are always in console even if WxPusher fails
 
     return msg[:-1]
 
